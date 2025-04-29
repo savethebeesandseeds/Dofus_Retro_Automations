@@ -1,7 +1,13 @@
 # Dofus‑Retro Automation Toolkit
 
 I know, instructions could be easier. All you need to know is that this is a single file .exe that makes the bot. 
-Its build to run as configured in `.config` file and `procedures(*.proc)`. 
+Its build to run as configured in `.config` file and folder `procedures/*.proc`. 
+
+To run just, configure `.config` and then do:
+
+```cmd
+test_proc.exe
+```
 
 It's a bot, to automate Game's Jobs or Actions.
 
