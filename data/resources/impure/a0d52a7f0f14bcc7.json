@@ -1,8 +1,9 @@
 {
-  "avg_price" : "2.614 kamas/u.",
+  "avg_price" : "10.505 kamas/u.",
   "category" : "447",
-  "name" : "Corona rota del Tofu Real",
-  "pods" : "10 pods",
-  "x1" : "1.998",
-  "x10" : "25.000",
-  "x10
+  "name" : "Ficha del Bworker",
+  "pods" : "1 pod",
+  "x1" : "9.989",
+  "x10" : "101.998",
+  "x100" : "1.099.500"
+}
