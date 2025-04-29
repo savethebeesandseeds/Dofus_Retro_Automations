@@ -1,5 +1,10 @@
 # Dofus‑Retro Automation Toolkit
 
+I know, instructions could be easier. All you need to know is that this is a single file .exe that makes the bot. 
+Its build to run as configured in `.config` file and `procedures(*.proc)`. 
+
+It's a bot, to automate Game's Jobs or Actions.
+
 **Automate Dofus Retro** with computer vision, OCR and a declarative scripting
 language – all in a single portable executable.
 
@@ -99,16 +104,14 @@ static OpenCV / Tesseract builds, so no dependency hunting.
 
 ## 6. Running the bot
 
-1. Copy **`test_proc.exe`** plus the two DLL folders produced by the build
-   (**OpenCV** and **Tesseract**) next to `Dofus Retro.exe`.
-2. Launch Dofus Retro, log in and position your character.
+1. Inspect file **`.confg`** . Change the Name of the Character, and the proc you want to run. 
+2. Launch Dofus-Retro.
 3. Open *cmd* and run:
 
    ```cmd
-   test_proc.exe run procedures\farm_loop.proc
+   test_proc.exe
    ```
-
-4. Watch the log (`logs/latest.log`) and stop with <kbd>Esc</kbd>.
+4. Construct your own procedures/*.proc
 
 ---
 
