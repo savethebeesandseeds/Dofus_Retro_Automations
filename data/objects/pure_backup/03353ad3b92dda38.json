@@ -1,0 +1,16 @@
+{
+  "category": "Categoría : Arco",
+  "full_name": "Arco Léptico (Niv. 185)",
+  "level": "Niv.185",
+  "name": "Arco Léptico",
+  "pods": "15 pods",
+  "price_beta": "Precio/unidad : 51.125",
+  "recipe:1": "x32 - Madera de tejo",
+  "recipe:2": "x12 - Zumo de Stropajo",
+  "recipe:3": "x8 - Nudo del Abrajidor claro",
+  "recipe:4": "xx6 - Pócima de Incendio",
+  "recipe:5": "xb - Pócima de Huracán",
+  "recipe:6": "x3 - Ceja del Rasgabola mayor",
+  "recipe:7": "x1 - Cola mágica del Peki",
+  "recipe:8": "x1 - Piedra preciosa del Kimbo"
+}

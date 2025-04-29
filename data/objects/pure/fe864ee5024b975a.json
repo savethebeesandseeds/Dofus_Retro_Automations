@@ -1,0 +1,16 @@
+{
+  "category": "Set del Bworker Gladiador (Categoría : Sombrero)",
+  "full_name": "Casco Lérico (Niv. 189)",
+  "level": "Niv.189",
+  "name": "Casco Lérico",
+  "pods": "10 pods",
+  "price_beta": "Precio/unidad : 59.000",
+  "recipe:1": "x50 - Tejido Zoth",
+  "recipe:2": "x23 - Baba del kasrakol",
+  "recipe:3": "x22 - Hueso de fantasma Pandikaze",
+  "recipe:4": "x17 - Cloaca del Pohoyo",
+  "recipe:5": "x15 - Tejido de fantasma Soryo Firefux",
+  "recipe:6": "x12 - Coco del Tufo oscuro",
+  "recipe:7": "x4 - Piel de bworker",
+  "recipe:8": "x1 - Casco del Bwork de Bronce"
+}

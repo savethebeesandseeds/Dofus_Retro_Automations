@@ -1,0 +1,16 @@
+{
+  "category": "Categoría : Martil",
+  "full_name": "Maza del Coralador Magistral (Niv. 125)",
+  "level": "Niv.125",
+  "name": "Maza del Coralador Magistral",
+  "pods": "8 pods",
+  "price_beta": "Precio/unidad : 40.150",
+  "recipe:1": "x35 - Grano del Abrajidor oscuro",
+  "recipe:2": "x25 - Carmelo de Esquejika",
+  "recipe:3": "x10 - Madera de carpe",
+  "recipe:4": "x10 - Coxis Magistral",
+  "recipe:5": "x10 - Madera de bambú sagrado",
+  "recipe:6": "x3 - Coral Magistral",
+  "recipe:7": "x3 - Trenza del Pohovo",
+  "recipe:8": "x3 - Corteza de Marguerita"
+}

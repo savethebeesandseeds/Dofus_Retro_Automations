@@ -1,0 +1,13 @@
+# mercante_todos_los_objetos.proc
+
+call_proc    mercante_objeto        573         582      "random"     "./data/objects/impure"
+call_proc    mercante_objeto        573         637      "random"     "./data/objects/impure"
+call_proc    mercante_objeto        573         692      "random"     "./data/objects/impure"
+call_proc    mercante_objeto        573         747      "random"     "./data/objects/impure"
+call_proc    mercante_objeto        573         802      "random"     "./data/objects/impure"
+call_proc    mercante_objeto        573         857      "random"     "./data/objects/impure"
+call_proc    mercante_objeto        573         912      "random"     "./data/objects/impure"
+call_proc    mercante_objeto        573         967      "random"     "./data/objects/impure"
+call_proc    mercante_objeto        573         1022     "random"     "./data/objects/impure"
+
+loop    300     mercante_todos_los_objetos_helper

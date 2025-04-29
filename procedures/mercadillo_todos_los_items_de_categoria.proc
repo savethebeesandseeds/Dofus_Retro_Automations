@@ -1,0 +1,6 @@
+# mercadillo_todos_los_items_de_categoria.proc
+#       Arguments:
+#           $1=category, $2=path/to/output/folder
+
+loop    12      mercadillo_todos_los_items_de_categoria_helper_a    "random"     $2           447             925               $1
+loop    500     mercadillo_todos_los_items_de_categoria_helper_b    "random"     $2           447             925               $1

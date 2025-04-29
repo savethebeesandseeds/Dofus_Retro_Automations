@@ -1,0 +1,16 @@
+{
+  "category": "Set del Zothico (Categoría : Sombrero)",
+  "full_name": "Casco del Guerrero Zoth (Niv. 134)",
+  "level": "Niv.134",
+  "name": "Casco del Guerrero Zoth",
+  "pods": "100 pods",
+  "price_beta": "Precio/unidad : 44.000",
+  "recipe:1": "x102 - Tejido Zoth",
+  "recipe:2": "x36 - Relleno de Mopet",
+  "recipe:3": "x14 - Tibia del Guerrero Zoth",
+  "recipe:4": "x6 - Zumo de Stropajo",
+  "recipe:5": "x5 - Kristalita",
+  "recipe:6": "x4 - Papada del Lodostropajo",
+  "recipe:7": "x4 - Corteza de Nierba",
+  "recipe:8": "x1 - Corteza de Tyniril"
+}

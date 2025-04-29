@@ -1,0 +1,22 @@
+# objecto_leer_receta.proc
+
+set_vars    "recipe:1"      ""
+set_vars    "recipe:2"      ""
+set_vars    "recipe:3"      ""
+set_vars    "recipe:4"      ""
+set_vars    "recipe:5"      ""
+set_vars    "recipe:6"      ""
+set_vars    "recipe:7"      ""
+set_vars    "recipe:8"      ""
+
+ocr_stop   1039    301     487     57      "No es posible crear este objeto"
+
+#                   proc                        x-coord-recurso     y-coord-recurso       x-coord-label     y-coord-label        dict_key
+call_proc   objecto_leer_receta_recurso               915                 356                 930               406             "recipe:1"
+call_proc   objecto_leer_receta_recurso               1016                356                 1031              406             "recipe:2"
+call_proc   objecto_leer_receta_recurso               1107                356                 1122              406             "recipe:3"
+call_proc   objecto_leer_receta_recurso               1209                356                 1224              406             "recipe:4"
+call_proc   objecto_leer_receta_recurso               1297                356                 1312              406             "recipe:5"
+call_proc   objecto_leer_receta_recurso               1400                356                 1415              406             "recipe:6"
+call_proc   objecto_leer_receta_recurso               1486                356                 1501              406             "recipe:7"
+call_proc   objecto_leer_receta_recurso               1583                356                 1598              406             "recipe:8"

@@ -1,0 +1,16 @@
+{
+  "category": "Categoría : Bota",
+  "full_name": "Botas Focas (Niv. 123)",
+  "level": "Niv.123",
+  "name": "Botas Focas",
+  "pods": "10 pods",
+  "price_beta": "Precio/unidad : 37.850",
+  "recipe:1": "x100 - Pluma del Bebedor",
+  "recipe:2": "x28 - Piel de Maestro Koalak",
+  "recipe:3": "x20 - Piel de Bworka",
+  "recipe:4": "x10 - Piel de cabalgador de koalak",
+  "recipe:5": "x? - Tejido de fantasma Pandikaze",
+  "recipe:6": "x? - Tela del Siegalak",
+  "recipe:7": "x1 - Piel de Maestro Pandora",
+  "recipe:8": "x1 - Tejido de Maestro Pandora"
+}

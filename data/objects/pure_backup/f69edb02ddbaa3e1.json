@@ -1,0 +1,16 @@
+{
+  "category": "Set del Bworker Berserker (Categoría : Amuleto)",
+  "full_name": "Amuleto del descanso eterno (Niv. 184)",
+  "level": "Niv.184",
+  "name": "Amuleto del descanso eterno",
+  "pods": "10 pods",
+  "price_beta": "Precio/unidad : 52.458",
+  "recipe:1": "x32 - Pico del Kido",
+  "recipe:2": "x25 - Trasero del tufo aéreo",
+  "recipe:3": "x21 - Corteza de Nierba",
+  "recipe:4": "x15 - Heráldica del Sargento Zoth",
+  "recipe:5": "x3 - Ambar del Tynril",
+  "recipe:6": "x2 - Piel de bworker",
+  "recipe:7": "x2 - Piel del Rasgabola Mayor",
+  "recipe:8": "x1 - Amuleto del Jefe Bwork"
+}
