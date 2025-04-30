@@ -1,40 +1,46 @@
-#include "dconfig.h"
-#include "dutils.h"
-#include "dread_images.h"
+/* test_proc.cpp */
+#include "dlog.hpp"
+#include "dwin_api.hpp"
+#include "dscreen_ocr.hpp"   // OCR wrapper we built
+#include "dproc.hpp"
 
 int main() {
-    log_info("[Commerce Pilot] Application Started...\n");
-    /* read the configuration */
-    char *temp_dir = config_temp_dir();
-    if (temp_dir == NULL) { 
-        log_error("Bad config\n"); 
+    SetConsoleOutputCP(CP_UTF8);
+    std::setlocale(LC_ALL, ".UTF8");
+    SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
+    
+    LOG_INFO("IMPORTANTE: debes modificar las propiedades del .exe de Dofus.\n");
+    LOG_INFO("\t - Configura el modo de compatibilidad a 'Windows 7'.\n");
+    LOG_INFO("\t - Desactiva la opción de 'Escalar en altas DPI'.\n");
+    LOG_INFO("\t - Esto es necesario para que las capturas de pantalla y OCR funcionen correctamente.\n");
+    
+    
+    LOG_INFO("Starting...\n");
+    const char *temp_dir = CFG_STR("temp_dir", "./temp").c_str();
+    std::string window_label = CFG_STR("window", "......");
+
+    LOG_INFO("Cleaning temporal directory: %s...\n", temp_dir);
+    du::DeleteFilesInDirectory(temp_dir);
+
+
+    HWND hwnd = dw::find_window_utf8(window_label, true);
+    if (!hwnd) {
+        LOG_ERROR("Window not found\n");
         return 1;
     }
-    /* initialize tesseract api */
-    initialize_tesseract();
 
-    // /* claen the enviroment */
-    // log_info("Cleaning temporal directory: %s...\n", temp_dir);
-    // DeleteFilesInDirectory(temp_dir);
+    LOG_INFO("Hooked window: %s\n", dw::get_window_title(hwnd).c_str());
+
+    dp::Context ctx{.hwnd = hwnd};
+
+    dp::run_proc(ctx, CFG_STR("procedure_name", "......"));   // ← one-liner launch
+
+
+    /* claen the enviroment */
+    if(CFG_BOOL("delete_temp", false)) {
+        LOG_INFO("Cleaning temporal directory: %s...\n", temp_dir);
+        du::DeleteFilesInDirectory(temp_dir);
+    }
     
-    // /* dispatch the thraed that captures the images and the thread that process the images */
-    // #pragma omp parallel sections
-    // {
-    //     #pragma omp section
-    //     {
-    //         commerce_pilot_process_loop();
-    //     }
-    // }
-
-    // /* claen the enviroment */
-    // if(config_delete_temp()) {
-    //     log_info("Cleaning temporal directory: %s...\n", temp_dir);
-    //     DeleteFilesInDirectory(temp_dir);
-    // }
-    
-    /* finalize */
-    finalize_tesseract();
-    free(temp_dir);
-
     return 0;
 }

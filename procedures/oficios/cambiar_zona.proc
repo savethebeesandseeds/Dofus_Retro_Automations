@@ -1,0 +1,3 @@
+# cambiar_zona.proc
+#   Argumentos: $1=[up,right,left,down]
+call_fn         change_map     $1

@@ -1,0 +1,12 @@
+# mercadillo_selecionar_categoria.proc
+#   Arguments: 
+#       $1 = text |  $2 = scroll time
+click        1028 271             # open list
+sleep        200                  # ms
+hold_click   1023 815 $2          # hold click on scroll down
+sleep        200                  # ms
+click_phrase_rect  618 303 382 528  "$1"
+sleep        200                  # ms
+expect_ocr   613 252 372 38 "$1"  # validate
+
+loop    45     mercadillos/mercadillo_selecionar_categoria_helper    1076       336

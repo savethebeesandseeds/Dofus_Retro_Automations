@@ -37,7 +37,8 @@ using Fn = bool(*)(Context&, const std::vector<std::string>&);
 /* A constexpr table → O(1) dispatch */
 static const std::unordered_map<std::string, Fn> FN_TABLE = {
     {"click_next_item_in_line", &dp_fn::click_next_item_in_line},
-    {"read_from_selected_item", &dp_fn::read_from_selected_item}
+    {"read_from_selected_item", &dp_fn::read_from_selected_item},
+    {"change_map", &dp_fn::change_map}
 };
 
 /*──────────────────── helpers ────────────────────────────*/
@@ -174,6 +175,7 @@ inline bool run_proc(Context& ctx,
         }
     /*──────────────── basic mouse / kbd ───────────────*/
         else if (cmd == "click")       { int x,y; ss>>x>>y; LOG_DEBUG("[run_proc] click (%d,%d)\n",x,y); dw::click(ctx.hwnd,x,y); }
+        else if (cmd == "click_delta") { int x,y,dx,dy; ss>>x>>y>>dx>>dy; LOG_DEBUG("[run_proc] click_delta (%d+%d,%d+%d)\n",x,dx,y,dy); dw::click(ctx.hwnd,x+dx,y+dy); }
         else if (cmd == "dblclick")    { int x,y; ss>>x>>y; LOG_DEBUG("[run_proc] dblclick (%d,%d)\n",x,y); dw::dbl_click(ctx.hwnd,x,y); }
         else if (cmd == "move")        { int x,y; ss>>x>>y; LOG_DEBUG("[run_proc] move (%d,%d)\n",x,y); dw::move_cursor(ctx.hwnd,x,y); }
         else if (cmd == "scroll")      { int x,y,d; ss>>x>>y>>d; LOG_DEBUG("[run_proc] scroll (%d,%d) d=%d\n",x,y,d); if(d) dw::mouse_wheel(ctx.hwnd,x,y,d); }

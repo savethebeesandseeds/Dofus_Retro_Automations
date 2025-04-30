@@ -1,0 +1,7 @@
+# mercadillo_runas_todas_las_categorias.proc 
+#       No arguments...
+#           Walk all the resources
+
+#                   proc                                          Categoria                scroll              output_path
+# call_proc   mercadillos/mercadillo_selecionar_categoria                   Runa de forjamagia            0
+call_proc   mercadillos/mercadillo_todos_los_items_de_categoria           Runa_de_forjamagia                          "./data/runes/impure"

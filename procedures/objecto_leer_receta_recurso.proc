@@ -1,6 +1,0 @@
-# objecto_leer_receta_recurso.proc 
-#   Argumentos:
-#       $1=x-coord-recurso, $2=y-coord-recurso, $3=x-coord-label, $4=y-coord-label, $5=dict_key
-move         $1      $2
-sleep        250
-OCR          $3      $4    500     26      into    "$5"

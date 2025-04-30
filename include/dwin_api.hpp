@@ -68,9 +68,10 @@ inline void   adjust_dpi(int&x,int&y){x=int(x*inv_scale());y=int(y*inv_scale());
 /*──────────────────── mouse / keyboard helpers ───────────────────────────*/
 inline void mouse_down(HWND h, int x, int y){dw::adjust_dpi(x, y);LPARAM lp = MAKELPARAM(x, y);::PostMessage(h, WM_LBUTTONDOWN, MK_LBUTTON, lp);}
 inline void mouse_up(HWND h, int x, int y){dw::adjust_dpi(x, y);LPARAM lp = MAKELPARAM(x, y);::PostMessage(h, WM_LBUTTONUP, 0, lp);}
-inline void click(HWND h,int x,int y){adjust_dpi(x,y);LPARAM lp=MAKELPARAM(x,y);::PostMessage(h,WM_LBUTTONDOWN,MK_LBUTTON,lp);::PostMessage(h,WM_LBUTTONUP,0,lp);}    
-inline void dbl_click(HWND h,int x,int y){click(h,x,y);::Sleep(60);click(h,x,y);}                                                
-inline void move_cursor(HWND h,int x,int y){adjust_dpi(x,y);POINT p{x,y};::ClientToScreen(h,&p);::SetCursorPos(p.x,p.y);}          
+inline void click(HWND h,int x,int y){adjust_dpi(x,y);LPARAM lp=MAKELPARAM(x,y);::PostMessage(h,WM_LBUTTONDOWN,MK_LBUTTON,lp);::PostMessage(h,WM_LBUTTONUP,0,lp);}
+inline void dbl_click(HWND h,int x,int y){click(h,x,y);::Sleep(60);click(h,x,y);}
+inline void move_cursor_real_mouse(HWND h,int x,int y){adjust_dpi(x,y);POINT p{x,y};::ClientToScreen(h,&p);::SetCursorPos(p.x,p.y);}
+inline void move_cursor(HWND h, int x, int y){adjust_dpi(x, y);LPARAM lp = MAKELPARAM(x, y);::PostMessage(h, WM_MOUSEMOVE, 0, lp);}
 inline void send_key(HWND h,WORD vk,bool ctrl=false){if(ctrl)::PostMessage(h,WM_KEYDOWN,VK_CONTROL,0);::PostMessage(h,WM_KEYDOWN,vk,0);::PostMessage(h,WM_KEYUP,vk,0);if(ctrl)::PostMessage(h,WM_KEYUP,VK_CONTROL,0);} 
 inline void send_text(HWND h,std::string_view s,int d=35){for(char c:s){::PostMessage(h,WM_CHAR,(WPARAM)(unsigned char)c,0);::Sleep(d);} }
 inline void send_text(HWND h,std::wstring_view s,int d=35){for(wchar_t c:s){::PostMessage(h,WM_CHAR,(WPARAM)c,0);::Sleep(d);} }

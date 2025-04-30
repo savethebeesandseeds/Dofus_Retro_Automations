@@ -1,0 +1,7 @@
+# lenador_la_mililameda.proc
+#   Arguments: None
+#   Start in zaap [5,7]
+sleep   2500
+#call_proc        oficios/lenador/lenador_zona_(5_7)      15500
+#call_proc        oficios/lenador/lenador_zona_(4_7)      15500
+call_proc       oficios/cambiar_zona                    left

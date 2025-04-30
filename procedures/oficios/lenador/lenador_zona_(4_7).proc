@@ -1,0 +1,17 @@
+# lenador_zona_(4_7).proc
+call_proc       oficios/interactuar_con_recurso     2074      747      10          10          $1
+call_proc       oficios/interactuar_con_recurso     2141      888      10          10          $1
+call_proc       oficios/interactuar_con_recurso     1858      792      10          10          $1
+call_proc       oficios/interactuar_con_recurso     1930      1072      10          10          $1
+call_proc       oficios/interactuar_con_recurso     1644      1061      10          10          $1
+call_proc       oficios/interactuar_con_recurso     1357      915      10          10          $1
+call_proc       oficios/interactuar_con_recurso     1223      910      10          10          $1
+call_proc       oficios/interactuar_con_recurso     1287      530      10          10          $1
+call_proc       oficios/interactuar_con_recurso     1142      895      10          10          $1
+call_proc       oficios/interactuar_con_recurso     939      1007      10          10          $1
+call_proc       oficios/interactuar_con_recurso     863      696      10          10          $1
+call_proc       oficios/interactuar_con_recurso     715      579      10          10          $1
+call_proc       oficios/interactuar_con_recurso     796      793      10          10          $1
+call_proc       oficios/interactuar_con_recurso     791      996      10          10          $1
+call_proc       oficios/interactuar_con_recurso     644      984      10          10          $1
+call_proc       oficios/interactuar_con_recurso     573      760      10          10          $1

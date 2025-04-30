@@ -5,8 +5,10 @@ Its build to run as configured in `.config` file and folder `procedures/*.proc`.
 
 To run just, configure `.config` and then do:
 
+Also there is a very useful map for recolection jobs hosted at: https://savethebeesandseeds.github.io/Dofus_Retro_Automations/
+
 ```cmd
-test_proc.exe
+main.exe
 ```
 
 It's a bot, to automate Game's Jobs or Actions.
@@ -41,7 +43,7 @@ fun parts).
 | Scripting engine           | `set`, `sleep`, `goto`, `call_fn`, `call_proc`, loops |
 | Intrinsics                 | Add new C++ functions in **`include/dproc_fn.hpp`** and expose them instantly |
 | Logging                    | Colour log levels, JSON dump of captured variables |
-| Cross‑build CI             | Single Docker line builds a statically‑linked **`test_proc.exe`** |
+| Cross‑build CI             | Single Docker line builds a statically‑linked **`main.exe`** |
 
 ---
 
@@ -52,7 +54,7 @@ fun parts).
 ├─ include/            # headers (config, logging, Win32, OpenCV helpers, intrinsics)
 ├─ src/                # implementation
 ├─ procedures/         # your .proc scripts
-├─ tests/              # unit + integration tests (entry point: test_proc.cpp)
+├─ tests/              # unit + integration tests (entry point: main.cpp)
 ├─ build/              # where static OpenCV / Tesseract libs live (git‑ignored)
 └─ makefile
 ```
@@ -65,7 +67,7 @@ fun parts).
 docker run --rm -it -v %cd%:/src ghcr.io/dofus-retro/ci:latest   bash -c "./scripts/bootstrap.sh && make test64 -j$(nproc)"
 ```
 
-When it finishes you get **`bin/test_proc.exe`** ready to copy to Windows.
+When it finishes you get **`bin/main.exe`** ready to copy to Windows.
 
 The `ghcr.io/dofus-retro/ci` image already bundles MinGW‑w64, CMake ≥ 3.22 and
 static OpenCV / Tesseract builds, so no dependency hunting.
@@ -115,7 +117,7 @@ static OpenCV / Tesseract builds, so no dependency hunting.
 3. Open *cmd* and run:
 
    ```cmd
-   test_proc.exe
+   main.exe
    ```
 4. Construct your own procedures/*.proc
 
@@ -143,7 +145,7 @@ goto   0         # infinite loop
 | `call_fn name …args`       | invoke a C++ intrinsic |
 | `goto N`                   | jump to line N (zero‑based) |
 
-See **`tests/test_proc.cpp`** for live examples.
+See **`tests/main.cpp`** for live examples.
 
 ---
 

@@ -8,6 +8,10 @@
 #include "dscreen_ocr.hpp"  // so::read_region / locate_text
 #include <opencv2/opencv.hpp>
 #include <optional>
+#include <opencv2/imgproc.hpp>
+#include <opencv2/imgcodecs.hpp>
+#include <vector>
+#include <algorithm>
 
 namespace dp_fn {
 
@@ -190,6 +194,143 @@ bool read_from_selected_item(Context& ctx,
 
     LOG_EVENT("[call_fn] read_from_selected_item \"%s\" = <%s>\n",
               var_name.c_str(), value.c_str());
+    return true;
+}
+
+
+
+
+// returns the 4 “extreme” centers: top, bottom, left, right
+struct Extremes {
+    cv::Point2d top, bottom, left, right;
+};
+
+Extremes find_white_square_centers(const cv::Mat& prev, const cv::Mat& post) {
+    LOG_DEBUG("[find_white] computing absdiff");
+    cv::Mat diff;
+    cv::absdiff(post, prev, diff);
+    LOG_DEBUG("[find_white] diff size: %dx% d, channels=%d",
+              diff.cols, diff.rows, diff.channels());
+
+    LOG_DEBUG("[find_white] thresholding for white squares");
+    cv::Mat mask;
+    cv::inRange(diff,
+                cv::Scalar(200,200,200),
+                cv::Scalar(255,255,255),
+                mask);
+    int nnz1 = cv::countNonZero(mask);
+    LOG_DEBUG("[find_white] raw mask nonzero pixels: %d", nnz1);
+
+    // morphology to clean noise
+    cv::Mat kernel = cv::getStructuringElement(
+        cv::MORPH_RECT, cv::Size(3,3));
+    cv::morphologyEx(mask, mask, cv::MORPH_CLOSE, kernel);
+    cv::morphologyEx(mask, mask, cv::MORPH_OPEN,  kernel);
+    int nnz2 = cv::countNonZero(mask);
+    LOG_DEBUG("[find_white] after morph mask nonzero: %d", nnz2);
+
+    // connected components → centroids
+    cv::Mat labels, stats, centroids;
+    int ncomp = cv::connectedComponentsWithStats(
+        mask, labels, stats, centroids, 8);
+    LOG_DEBUG("[find_white] connectedComponents → %d components", ncomp);
+
+    // collect centroids (skip label 0 = background)
+    std::vector<cv::Point2d> centers;
+    for (int i = 1; i < ncomp; ++i) {
+        double x = centroids.at<double>(i, 0);
+        double y = centroids.at<double>(i, 1);
+        centers.emplace_back(x, y);
+        LOG_DEBUG("[find_white]  - comp %d → center=(%.1f,%.1f)", i, x, y);
+    }
+
+    if (centers.empty()) {
+        LOG_ERROR("[find_white] no white‐square centers detected!");
+        throw std::runtime_error("find_white: 0 centers");
+    }
+
+    // find extremes
+    auto cmpY = [](auto& a, auto& b){ return a.y < b.y; };
+    auto cmpX = [](auto& a, auto& b){ return a.x < b.x; };
+
+    Extremes ex;
+    ex.top    = *std::min_element(centers.begin(), centers.end(), cmpY);
+    ex.bottom = *std::max_element(centers.begin(), centers.end(), cmpY);
+    ex.left   = *std::min_element(centers.begin(), centers.end(), cmpX);
+    ex.right  = *std::max_element(centers.begin(), centers.end(), cmpX);
+
+    LOG_DEBUG(
+      "[find_white] extremes → top(%.1f,%.1f) bottom(%.1f,%.1f) "
+      "left(%.1f,%.1f) right(%.1f,%.1f)",
+      ex.top.x, ex.top.y,
+      ex.bottom.x, ex.bottom.y,
+      ex.left.x, ex.left.y,
+      ex.right.x, ex.right.y
+    );
+
+    return ex;
+}
+
+/*────────────────── change_map ──────────────────*/
+/* args:
+ * 0 [up,right,left,down]
+ */
+bool change_map(dp::Context& ctx,
+                const std::vector<std::string>& args)
+{
+    if (args.empty()) {
+        LOG_ERROR("[change_map] missing direction argument\n");
+        return false;
+    }
+    const auto dir = args[0];
+    LOG_EVENT("[change_map] direction='%s'\n", dir.c_str());
+
+    // 1. before
+    cv::Mat prev = so::detail::capture(ctx.hwnd);
+    LOG_DEBUG("[change_map] captured prev frame\n");
+
+    // 2. trigger map move
+    dw::send_vk(ctx.hwnd, "a");
+    std::this_thread::sleep_for(std::chrono::milliseconds(150));
+    LOG_DEBUG("[change_map] sent key 'a' and waited 150ms\n");
+
+    // 3. after
+    cv::Mat post = so::detail::capture(ctx.hwnd);
+    LOG_DEBUG("[change_map] captured post frame\n");
+
+    // 4. call the diff→center routine (note the '='!)
+    LOG_DEBUG("[change_map] about to find white squares...\n");
+    Extremes ex;
+    try {
+        ex = find_white_square_centers(prev, post);
+        LOG_DEBUG(
+          "[change_map] extremes: top=(%.1f,%.1f) bottom=(%.1f,%.1f) "
+          "left=(%.1f,%.1f) right=(%.1f,%.1f)\n",
+          ex.top.x,    ex.top.y,
+          ex.bottom.x, ex.bottom.y,
+          ex.left.x,   ex.left.y,
+          ex.right.x,  ex.right.y
+        );
+    }
+    catch (const std::exception& e) {
+        LOG_ERROR("[change_map] exception in find_white_square_centers: %s\n", e.what());
+        return false;
+    }
+
+    // 5. pick your click point
+    int cx, cy;
+    if      (dir == "up")    { cx = int(ex.top.x);    cy = int(ex.top.y); }
+    else if (dir == "down")  { cx = int(ex.bottom.x); cy = int(ex.bottom.y); }
+    else if (dir == "left")  { cx = int(ex.left.x);   cy = int(ex.left.y); }
+    else if (dir == "right") { cx = int(ex.right.x);  cy = int(ex.right.y); }
+    else {
+        LOG_ERROR("[change_map] invalid direction '%s'\n", dir.c_str());
+        return false;
+    }
+
+    LOG_EVENT("[change_map] clicking to chang the map to [%s]=(%d,%d)\n", dir.c_str(), cx, cy);
+    dw::click(ctx.hwnd, cx, cy);
+
     return true;
 }
 

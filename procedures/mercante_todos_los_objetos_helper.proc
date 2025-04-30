@@ -1,6 +1,0 @@
-# mercante_todos_los_objetos_helper.proc
-set_prev
-hold_click          811     1021    55
-sleep 250
-break_if_no_diff    309     562     390         469
-call_proc    mercante_objeto        573         1022     "random"     "./data/objects/impure"
