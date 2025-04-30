@@ -177,7 +177,7 @@
       img.setAttribute('role','presentation'); img.alt = '';
       const {x, y, z} = coords;
       const key = `${z}/${x}/${y}`;
-      img.src = VALID.has(key) ? `./tiles/${key}.png` : './tiles/empty.png';
+      img.src = VALID.has(key) ? `./dofus-map/tiles/${key}.png` : './dofus-map/tiles/empty.png';
       img.onload = () => done(null, img);
       img.onerror = () => done(null, img);
       return img;
@@ -289,7 +289,7 @@
 
         const summary = document.createElement('summary');
         const ic = document.createElement('img');
-        ic.src=`./jobs/${prof.icon}`;
+        ic.src=`./dofus-map/jobs/${prof.icon}`;
         summary.append(ic, prof.name[lang]);
         details.appendChild(summary);
 
@@ -297,7 +297,7 @@
           const lbl = document.createElement('label');
           lbl.className = 'resource-label';
           const chk = document.createElement('input'); chk.type='checkbox'; chk.id=`chk-${profKey}-${resKey}`;
-          const ic2=document.createElement('img');ic2.src=`./jobs/${profKey}_sub.png`;
+          const ic2=document.createElement('img');ic2.src=`./dofus-map/jobs/${profKey}_sub.png`;
           chk.addEventListener('change', e => {
             if (e.target.checked) {activeData[chk.id] = res.maps.slice();
             } else {delete activeData[chk.id];}
