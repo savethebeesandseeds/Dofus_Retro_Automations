@@ -1,0 +1,8 @@
+call_proc       oficios/interactuar_con_recurso     788      175      10          10          $1
+call_proc       oficios/interactuar_con_recurso     1576      66      10          10          $1
+call_proc       oficios/interactuar_con_recurso     2074      243      10          10          $1
+call_proc       oficios/interactuar_con_recurso     1292      443      10          10          $1
+call_proc       oficios/interactuar_con_recurso     1708      417      10          10          $1
+call_proc       oficios/interactuar_con_recurso     2069      1046      10          10          $1
+call_proc       oficios/interactuar_con_recurso     1781      1116      10          10          $1
+call_proc       oficios/interactuar_con_recurso     1504      1115      10          10          $1

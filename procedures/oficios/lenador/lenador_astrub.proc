@@ -1,0 +1,67 @@
+# lenador_la_mililameda.proc
+#       Starts in zaap [5,7]
+#   Arguments:
+#           $1=valocity
+sleep   2500
+#
+#call_proc       oficios/lenador/astrub/lenador_zona_(3_-24)         $1
+#call_proc       oficios/cambiar_zona                    up
+#call_proc       oficios/lenador/astrub/lenador_zona_(3_-25)         $1
+#call_proc       oficios/cambiar_zona                    up
+#call_proc       oficios/lenador/astrub/lenador_zona_(3_-26)         $1
+#call_proc       oficios/cambiar_zona                    up
+#call_proc       oficios/lenador/astrub/lenador_zona_(3_-27)         $1
+#call_proc       oficios/cambiar_zona                    left
+#call_proc       oficios/cambiar_zona                    up
+#call_proc       oficios/lenador/astrub/lenador_zona_(2_-28)         $1
+#call_proc       oficios/cambiar_zona                    left
+#call_proc       oficios/lenador/astrub/lenador_zona_(1_-28)         $1
+#call_proc       oficios/cambiar_zona                    left
+#call_proc       oficios/lenador/astrub/lenador_zona_(0_-28)         $1
+#call_proc       oficios/cambiar_zona                    left
+#call_proc       oficios/lenador/astrub/lenador_zona_(-1_-28)            $1
+#call_proc       oficios/cambiar_zona                    left
+#call_proc       oficios/lenador/astrub/lenador_zona_(-2_-28)            $1
+#call_proc       oficios/cambiar_zona                    up
+#call_proc       oficios/lenador/astrub/lenador_zona_(-2_-29)            $1
+#call_proc       oficios/cambiar_zona                    down
+#call_proc       oficios/cambiar_zona                    down
+#call_proc       oficios/lenador/astrub/lenador_zona_(-2_-27)            $1
+#call_proc       oficios/cambiar_zona                    down
+#call_proc       oficios/lenador/astrub/lenador_zona_(-2_-26)            $1
+#call_proc       oficios/cambiar_zona                    down
+#call_proc       oficios/lenador/astrub/lenador_zona_(-2_-25)            $1
+#call_proc       oficios/cambiar_zona                    down
+#call_proc       oficios/lenador/astrub/lenador_zona_(-2_-24)            $1
+call_proc       oficios/cambiar_zona                    right
+call_proc       oficios/lenador/astrub/lenador_zona_(-1_-24)            $1
+call_proc       oficios/cambiar_zona                    up
+call_proc       oficios/lenador/astrub/lenador_zona_(-1_-25)            $1
+call_proc       oficios/cambiar_zona                    up
+call_proc       oficios/lenador/astrub/lenador_zona_(-1_-26)            $1
+call_proc       oficios/cambiar_zona                    right
+call_proc       oficios/cambiar_zona                    up
+call_proc       oficios/lenador/astrub/lenador_zona_(0_-27)         $1
+call_proc       oficios/cambiar_zona                    down
+call_proc       oficios/lenador/astrub/lenador_zona_(0_-26)         $1
+call_proc       oficios/cambiar_zona                    down
+call_proc       oficios/lenador/astrub/lenador_zona_(0_-25)         $1
+call_proc       oficios/cambiar_zona                    down
+call_proc       oficios/lenador/astrub/lenador_zona_(0_-24)         $1
+call_proc       oficios/cambiar_zona                    right
+call_proc       oficios/lenador/astrub/lenador_zona_(1_-24)         $1
+call_proc       oficios/cambiar_zona                    up
+call_proc       oficios/lenador/astrub/lenador_zona_(1_-25)         $1
+call_proc       oficios/cambiar_zona                    up
+call_proc       oficios/lenador/astrub/lenador_zona_(1_-26)         $1
+call_proc       oficios/cambiar_zona                    up
+call_proc       oficios/lenador/astrub/lenador_zona_(1_-27)         $1
+call_proc       oficios/cambiar_zona                    right
+call_proc       oficios/lenador/astrub/lenador_zona_(2_-27)         $1
+call_proc       oficios/cambiar_zona                    down
+call_proc       oficios/lenador/astrub/lenador_zona_(2_-26)         $1
+call_proc       oficios/cambiar_zona                    down
+call_proc       oficios/lenador/astrub/lenador_zona_(2_-25)         $1
+call_proc       oficios/cambiar_zona                    down
+call_proc       oficios/lenador/astrub/lenador_zona_(2_-24)         $1
+call_proc       oficios/cambiar_zona                    right

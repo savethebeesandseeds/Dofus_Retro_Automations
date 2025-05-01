@@ -187,7 +187,7 @@ inline bool run_proc(Context& ctx,
             dw::mouse_down(ctx.hwnd,x,y); ::Sleep(dur); dw::mouse_up(ctx.hwnd,x,y);
         }
         else if (cmd == "type")        { std::string t; std::getline(ss,t); t=du::trim_quotes(du::trim(t)); LOG_DEBUG("[run_proc] type \"%s\"\n",t.c_str()); dw::send_text(ctx.hwnd,t); }
-        else if (cmd == "key")         { std::string k; ss>>k; LOG_DEBUG("[run_proc] key \"%s\"\n",k.c_str()); dw::send_vk(ctx.hwnd,k); }
+        else if (cmd == "key")         { std::string k; ss>>k; LOG_DEBUG("[run_proc] key \"%s\"\n",k.c_str()); dw::send_vk_infocus(ctx.hwnd,k); }
         else if (cmd == "paste")       { std::string t; std::getline(ss,t); t=du::trim_quotes(du::trim(t)); LOG_DEBUG("[run_proc] paste \"%s\"\n",t.c_str()); dw::paste(ctx.hwnd,dw::to_wstring(t)); }
         else if (cmd == "sleep")       { int ms; ss>>ms; LOG_EVENT("[run_proc] sleep %dms\n",ms); std::this_thread::sleep_for(std::chrono::milliseconds(ms)); }
 

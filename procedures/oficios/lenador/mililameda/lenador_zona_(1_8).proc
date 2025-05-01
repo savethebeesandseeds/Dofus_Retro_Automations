@@ -1,0 +1,10 @@
+#       Argumentos: 
+#               $1=velocidad
+call_proc       oficios/interactuar_con_recurso     1783      955      10          10          $1
+call_proc       oficios/interactuar_con_recurso     718      478      10          10          $1
+call_proc       oficios/interactuar_con_recurso     867      557      10          10          $1
+call_proc       oficios/interactuar_con_recurso     863      469      10          10          $1
+call_proc       oficios/interactuar_con_recurso     503      230      10          10          $1
+call_proc       oficios/interactuar_con_recurso     367      291      10          10          $1
+call_proc       oficios/interactuar_con_recurso     427      1062      10          10          $1
+call_proc       oficios/interactuar_con_recurso     514      1031      10          10          $1

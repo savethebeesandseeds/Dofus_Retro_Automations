@@ -11,7 +11,9 @@
 #include <opencv2/imgproc.hpp>
 #include <opencv2/imgcodecs.hpp>
 #include <vector>
+#include <cmath>  // for std::abs
 #include <algorithm>
+#include <thread>
 
 namespace dp_fn {
 
@@ -205,71 +207,169 @@ struct Extremes {
     cv::Point2d top, bottom, left, right;
 };
 
-Extremes find_white_square_centers(const cv::Mat& prev, const cv::Mat& post) {
-    LOG_DEBUG("[find_white] computing absdiff");
-    cv::Mat diff;
+Extremes find_white_square_centers(const cv::Mat& prev,
+                                   const cv::Mat& post)
+{
+    // read params
+    int thr       = CFG_INT("white_diff_thresh", 30);
+    int max_area  = CFG_INT("max_arrow_area", 5000);
+    int min_area  = CFG_INT("min_arrow_area", 500);
+    int fuzz      = CFG_INT("change_zone_white_square_fuse_comparison", 350);
+    int dilateK   = CFG_INT("diff_dilate_ksize", 3) | 1;               // ensure odd
+    int morphSize = CFG_INT("morph_size", 7) | 1;                   // ensure odd
+
+    // 1) diff → gray
+    cv::Mat diff, gray;
     cv::absdiff(post, prev, diff);
-    LOG_DEBUG("[find_white] diff size: %dx% d, channels=%d",
-              diff.cols, diff.rows, diff.channels());
+    cv::cvtColor(diff, gray, cv::COLOR_BGRA2GRAY);
+    LOG_DEBUG("[find_white] gray diff %dx%d\n", gray.cols, gray.rows);
 
-    LOG_DEBUG("[find_white] thresholding for white squares");
+    // 2) optional dialte (max filter) to smooth discontinuities
+    if(dilateK) {
+        // build a square kernel of size dilateK×dilateK
+        cv::Mat kernelBlur = cv::getStructuringElement(
+            cv::MORPH_RECT, cv::Size(dilateK, dilateK));
+    
+        // apply max‐filter (grayscale dilation)
+        cv::Mat dilated;
+        cv::dilate(gray, dilated, kernelBlur);
+        gray = dilated;   // overwrite, same as median blur
+        LOG_DEBUG("[find_white] dilate(max) k=%d\n", dilateK);
+    }
+    
+    // 3) threshold → binarize
     cv::Mat mask;
-    cv::inRange(diff,
-                cv::Scalar(200,200,200),
-                cv::Scalar(255,255,255),
-                mask);
-    int nnz1 = cv::countNonZero(mask);
-    LOG_DEBUG("[find_white] raw mask nonzero pixels: %d", nnz1);
+    cv::threshold(gray, mask, thr, 255, cv::THRESH_BINARY);
+    LOG_DEBUG("[find_white] after thresh(%d): %d pix\n", thr, cv::countNonZero(mask));
 
-    // morphology to clean noise
+    // 3.5) apply frame‐mask: keep only two vertical and two horizontal stripes
+    {
+        LOG_DEBUG("[find_white] applying frame mask\n");
+        cv::Mat frameMask = cv::Mat::zeros(mask.size(), mask.type());
+        int H = mask.rows, W = mask.cols;
+
+        // vertical stripes: x∈[280,500), [2060,2276)
+        std::vector<std::pair<int,int>> xRanges{{280,500}, {2060,2276}};
+        for (auto [x0,x1] : xRanges) {
+            cv::Rect r(x0, 0, x1 - x0, H);
+            frameMask(r).setTo(255);
+        }
+
+        // horizontal stripes: y∈[0,150), [1000,1160)
+        std::vector<std::pair<int,int>> yRanges{{0,150}, {1000,1160}};
+        for (auto [y0,y1] : yRanges) {
+            cv::Rect r(0, y0, W, y1 - y0);
+            frameMask(r).setTo(255);
+        }
+
+        // mask out everything else
+        mask &= frameMask;
+        LOG_DEBUG("[find_white] after frame mask: %d pix\n", cv::countNonZero(mask));
+    }
+
+    // 4) morphology: first close small holes, then open tiny spots
     cv::Mat kernel = cv::getStructuringElement(
-        cv::MORPH_RECT, cv::Size(3,3));
+        cv::MORPH_RECT, cv::Size(morphSize, morphSize));
     cv::morphologyEx(mask, mask, cv::MORPH_CLOSE, kernel);
     cv::morphologyEx(mask, mask, cv::MORPH_OPEN,  kernel);
-    int nnz2 = cv::countNonZero(mask);
-    LOG_DEBUG("[find_white] after morph mask nonzero: %d", nnz2);
+    LOG_DEBUG("[find_white] after morph k=%d: %d pix\n", 
+              morphSize, cv::countNonZero(mask));
 
-    // connected components → centroids
+    // 5) connected components
     cv::Mat labels, stats, centroids;
     int ncomp = cv::connectedComponentsWithStats(
         mask, labels, stats, centroids, 8);
-    LOG_DEBUG("[find_white] connectedComponents → %d components", ncomp);
+    LOG_DEBUG("[find_white] %d comps\n", ncomp);
 
-    // collect centroids (skip label 0 = background)
-    std::vector<cv::Point2d> centers;
+    // 6) collect valid squares
+    struct C { cv::Point2d ctr; int area; };
+    std::vector<C> comps;
     for (int i = 1; i < ncomp; ++i) {
+        int area = stats.at<int>(i, cv::CC_STAT_AREA);
+        if (area > max_area || area < min_area) {
+            LOG_DEBUG("[find_white] skip comp %d area=%d\n", i, area);
+            continue;
+        }
         double x = centroids.at<double>(i, 0);
         double y = centroids.at<double>(i, 1);
-        centers.emplace_back(x, y);
-        LOG_DEBUG("[find_white]  - comp %d → center=(%.1f,%.1f)", i, x, y);
+        comps.push_back({{x,y}, area});
+        LOG_DEBUG("[find_white] keep comp %d \tarea=%d \t at = (  %.1f,\t%.1f  )\n", 
+                  i, area, x, y);
     }
-
-    if (centers.empty()) {
-        LOG_ERROR("[find_white] no white‐square centers detected!");
+    if (comps.empty()) {
+        LOG_ERROR("[find_white] no squares after filter!\n");
         throw std::runtime_error("find_white: 0 centers");
     }
 
-    // find extremes
-    auto cmpY = [](auto& a, auto& b){ return a.y < b.y; };
-    auto cmpX = [](auto& a, auto& b){ return a.x < b.x; };
+    // 6.5) debug: annotate centers + areas on the post image
+    if (CFG_BOOL("debug_img", false)) {
+        so::detail::save_debug_image(mask,  "mask_change_map");
+        // convert post (BGRA) → BGR for drawing
+        cv::Mat dbg;
+        cv::cvtColor(post, dbg, cv::COLOR_BGRA2BGR);
 
+        for (auto &c : comps) {
+            // round center to int
+            cv::Point pt(int(c.ctr.x), int(c.ctr.y));
+
+            // draw a filled red circle
+            cv::circle(dbg, pt, 5, cv::Scalar(0, 0, 255), -1);
+
+            // draw the area next to it (slightly offset above-right)
+            std::string txt = std::to_string(c.area);
+            cv::putText(dbg, txt, pt + cv::Point(6, -6),
+                        cv::FONT_HERSHEY_SIMPLEX,
+                        0.5,               // font scale
+                        cv::Scalar(0,0,255),
+                        1,                 // thickness
+                        cv::LINE_AA);
+        }
+
+        // save out the annotated image
+        so::detail::save_debug_image(dbg, "white_centers");
+        LOG_DEBUG("[find_white] debug_centers: saved annotated image\n");
+    }
+
+    // 7) fuzzy extreme comparators (as before)
+    auto topCmp    = [fuzz](auto &a, auto &b){
+        double dy = a.ctr.y - b.ctr.y;
+        if (std::abs(dy) > fuzz) return a.ctr.y < b.ctr.y;
+        return a.area > b.area;
+    };
+    auto bottomCmp = [fuzz](auto &a, auto &b){
+        double dy = a.ctr.y - b.ctr.y;
+        if (std::abs(dy) > fuzz) return a.ctr.y > b.ctr.y;
+        return a.area > b.area;
+    };
+    auto leftCmp   = [fuzz](auto &a, auto &b){
+        double dx = a.ctr.x - b.ctr.x;
+        if (std::abs(dx) > fuzz) return a.ctr.x < b.ctr.x;
+        return a.area > b.area;
+    };
+    auto rightCmp  = [fuzz](auto &a, auto &b){
+        double dx = a.ctr.x - b.ctr.x;
+        if (std::abs(dx) > fuzz) return a.ctr.x > b.ctr.x;
+        return a.area > b.area;
+    };
+
+    // 8) pick extremes
     Extremes ex;
-    ex.top    = *std::min_element(centers.begin(), centers.end(), cmpY);
-    ex.bottom = *std::max_element(centers.begin(), centers.end(), cmpY);
-    ex.left   = *std::min_element(centers.begin(), centers.end(), cmpX);
-    ex.right  = *std::max_element(centers.begin(), centers.end(), cmpX);
+    ex.top    = std::min_element(comps.begin(), comps.end(), topCmp)->ctr;
+    ex.bottom = std::min_element(comps.begin(), comps.end(), bottomCmp)->ctr;
+    ex.left   = std::min_element(comps.begin(), comps.end(), leftCmp)->ctr;
+    ex.right  = std::min_element(comps.begin(), comps.end(), rightCmp)->ctr;
 
     LOG_DEBUG(
-      "[find_white] extremes → top(%.1f,%.1f) bottom(%.1f,%.1f) "
-      "left(%.1f,%.1f) right(%.1f,%.1f)",
+      "[find_white] extremes: top(%.1f,%.1f), bottom(%.1f,%.1f), "
+      "left(%.1f,%.1f), right(%.1f,%.1f)\n",
       ex.top.x, ex.top.y,
       ex.bottom.x, ex.bottom.y,
       ex.left.x, ex.left.y,
       ex.right.x, ex.right.y
     );
-
     return ex;
 }
+
 
 /*────────────────── change_map ──────────────────*/
 /* args:
@@ -290,8 +390,8 @@ bool change_map(dp::Context& ctx,
     LOG_DEBUG("[change_map] captured prev frame\n");
 
     // 2. trigger map move
-    dw::send_vk(ctx.hwnd, "a");
-    std::this_thread::sleep_for(std::chrono::milliseconds(150));
+    dw::send_vk_infocus(ctx.hwnd, "a");
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
     LOG_DEBUG("[change_map] sent key 'a' and waited 150ms\n");
 
     // 3. after

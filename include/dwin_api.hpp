@@ -12,6 +12,7 @@
 #include <memory>
 #include <shellscalingapi.h> // link to Shcore.lib
 #include "dlog.hpp"      /* LOG_*    */
+#include <thread>
 
 namespace dw {
 
@@ -103,6 +104,41 @@ inline void send_vk(HWND hwnd, std::string_view key) {
     }
 
     dw::send_key(hwnd, vk, ctrl);
+}
+inline void send_vk_infocus(HWND hwnd, std::string_view key) {
+    // 1) remember who was in front
+    HWND prevFg = ::GetForegroundWindow();
+
+    // 2) get thread IDs
+    DWORD thisT  = ::GetCurrentThreadId();
+    DWORD prevT  = ::GetWindowThreadProcessId(prevFg, nullptr);
+    DWORD targetT = ::GetWindowThreadProcessId(hwnd, nullptr);
+
+    // 3) attach so SetForegroundWindow will work
+    ::AttachThreadInput(thisT, prevT,   TRUE);
+    ::AttachThreadInput(thisT, targetT, TRUE);
+
+    // 4) bring to front + focus
+    ::SetForegroundWindow(hwnd);
+    ::SetFocus(hwnd);
+    ::SetActiveWindow(hwnd);
+
+    // small pause to ensure the OS processes the focus change
+    std::this_thread::sleep_for(std::chrono::milliseconds(5));
+    
+    // 5) do the key
+    dw::click(hwnd,1558,1466);          // click vacío para setear el focus
+    std::this_thread::sleep_for(std::chrono::milliseconds(5));
+    dw::send_vk(hwnd, key);
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(5));
+
+    // 6) restore the previous foreground window
+    ::SetForegroundWindow(prevFg);
+
+    // 7) detach thread inputs
+    ::AttachThreadInput(thisT, targetT, FALSE);
+    ::AttachThreadInput(thisT, prevT,   FALSE);
 }
 inline void mouse_wheel(HWND hwnd, int x, int y, int delta)
 {

@@ -63,7 +63,7 @@ inline cv::Mat capture(HWND hwnd)
 
     ::DeleteObject(hbm); ::DeleteDC(hdcMem); ::ReleaseDC(hwnd, hdcWin);
 
-if(CFG_BOOL("debug_ocr",false)) {
+if(CFG_BOOL("debug_img",false)) {
     detail::save_debug_image(img,  "capture");
 }
 
@@ -201,7 +201,7 @@ public:
             bw  = img.clone();
         }
 
-        if(CFG_BOOL("debug_ocr",false)) {
+        if(CFG_BOOL("debug_img",false)) {
             detail::save_debug_image(bw,  "ocr");
         }
         auto old = api_.GetPageSegMode();
@@ -280,7 +280,7 @@ inline std::string Engine::read(HWND hwnd,
         cv::merge(ch, diff);
     }
 
-    if(CFG_BOOL("debug_ocr",false)) {
+    if(CFG_BOOL("debug_img",false)) {
         detail::save_debug_image(cur,  "curr");
         detail::save_debug_image(prev, "prev");
         detail::save_debug_image(diff, "diff");
@@ -318,7 +318,7 @@ inline std::vector<RECT> scan(cv::Mat img,
     const std::string expected = du::simplify(query);
     LOG_INFO("[scan] simplified query: '%s'\n", expected.c_str());
 
-    if(CFG_BOOL("debug_ocr",false)) {
+    if(CFG_BOOL("debug_img",false)) {
         detail::save_debug_image(img, "scan_input");
     }
 
@@ -368,7 +368,7 @@ inline std::vector<RECT> scan(cv::Mat img,
         LOG_INFO("[scan] extracted %d words from initial pass.\n", word_count);
     }
 
-    if(CFG_BOOL("debug_ocr",false)) {
+    if(CFG_BOOL("debug_img",false)) {
         detail::save_debug_image(img, "scan_input_fixed");
     }
 

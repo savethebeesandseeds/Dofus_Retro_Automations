@@ -1,0 +1,11 @@
+# lenador_zona_(2_8).proc
+#       Argumentos: 
+#               $1=velocidad
+call_proc       oficios/interactuar_con_recurso     1785      957      10          10          $1
+call_proc       oficios/interactuar_con_recurso     2140      57      10          10          $1
+call_proc       oficios/interactuar_con_recurso     1853      121      10          10          $1
+call_proc       oficios/interactuar_con_recurso     1086      506      10          10          $1
+call_proc       oficios/interactuar_con_recurso     1000      624      10          10          $1
+call_proc       oficios/interactuar_con_recurso     712      555      10          10          $1
+call_proc       oficios/interactuar_con_recurso     501      295      10          10          $1
+call_proc       oficios/interactuar_con_recurso     356      374      10          10          $1

@@ -1,7 +1,31 @@
 # lenador_la_mililameda.proc
-#   Arguments: None
-#   Start in zaap [5,7]
+#       Starts in zaap [5,7]
+#   Arguments:
+#           $1=valocity
 sleep   2500
-#call_proc        oficios/lenador/lenador_zona_(5_7)      15500
-#call_proc        oficios/lenador/lenador_zona_(4_7)      15500
+call_proc       oficios/lenador/mililameda/lenador_zona_(5_7)      $1
 call_proc       oficios/cambiar_zona                    left
+call_proc       oficios/lenador/mililameda/lenador_zona_(4_7)      $1
+call_proc       oficios/cambiar_zona                    down
+call_proc       oficios/cambiar_zona                    left
+call_proc       oficios/lenador/mililameda/lenador_zona_(3_8)      $1
+call_proc       oficios/cambiar_zona                    left
+call_proc       oficios/lenador/mililameda/lenador_zona_(2_8)      $1
+call_proc       oficios/cambiar_zona                    left
+call_proc       oficios/lenador/mililameda/lenador_zona_(1_8)      $1
+call_proc       oficios/cambiar_zona                    left
+call_proc       oficios/lenador/mililameda/lenador_zona_(0_8)      $1
+call_proc       oficios/cambiar_zona                    down
+call_proc       oficios/lenador/mililameda/lenador_zona_(0_9)      $1
+call_proc       oficios/cambiar_zona                    right
+call_proc       oficios/lenador/mililameda/lenador_zona_(1_9)      $1
+call_proc       oficios/cambiar_zona                    right
+call_proc       oficios/lenador/mililameda/lenador_zona_(2_9)      $1
+call_proc       oficios/cambiar_zona                    right
+call_proc       oficios/lenador/mililameda/lenador_zona_(3_9)      $1
+call_proc       oficios/cambiar_zona                    right
+call_proc       oficios/lenador/mililameda/lenador_zona_(4_9)      $1
+call_proc       oficios/cambiar_zona                    right
+call_proc       oficios/cambiar_zona                    up
+call_proc       oficios/lenador/mililameda/lenador_zona_(5_8)      $1
+call_proc       oficios/cambiar_zona                    up

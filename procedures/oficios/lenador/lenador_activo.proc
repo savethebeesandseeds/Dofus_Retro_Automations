@@ -1,0 +1,4 @@
+# lenador_activo.proc
+#   Arguments: None
+#loop    25      oficios/lenador/lenador_la_mililameda       14000
+loop    25      oficios/lenador/lenador_astrub       14000
