@@ -1,0 +1,68 @@
+[
+    { "nombre": "Runa Fo",                          "efecto": 1,  "peso": 1 },
+    { "nombre": "Runa Pa Fo",                       "efecto": 3,  "peso": 3 },
+    { "nombre": "Runa Ra Fo",                       "efecto": 10, "peso": 10 },
+
+    { "nombre": "Runa Ine",                         "efecto": 1,  "peso": 1 },
+    { "nombre": "Runa Pa Ine",                      "efecto": 3,  "peso": 3 },
+    { "nombre": "Runa Ra Ine",                      "efecto": 10, "peso": 10 },
+
+    { "nombre": "Runa Cha",                         "efecto": 1,  "peso": 1 },
+    { "nombre": "Runa Pa Cha",                      "efecto": 3,  "peso": 3 },
+    { "nombre": "Runa Ra Cha",                      "efecto": 10, "peso": 10 },
+
+    { "nombre": "Runa Age",                         "efecto": 1,  "peso": 1 },
+    { "nombre": "Runa Pa Age",                      "efecto": 3,  "peso": 3 },
+    { "nombre": "Runa Ra Age",                      "efecto": 10, "peso": 10 },
+    
+    { "nombre": "Runa Sa",                          "efecto": 1,  "peso": 3 },
+    { "nombre": "Runa Pa Sa",                       "efecto": 3,  "peso": 9 },
+    { "nombre": "Runa Ra Sa",                       "efecto": 10, "peso": 30 },
+    
+    { "nombre": "Runa Vi",                          "efecto": 3,  "peso": 0.25 },
+    { "nombre": "Runa Pa Vi",                       "efecto": 10, "peso": 2.5 },
+    { "nombre": "Runa Ra Vi",                       "efecto": 30, "peso": 7.5 },
+    
+    { "nombre": "Runa Pod",                         "efecto": 10, "peso": 0.25 },
+    { "nombre": "Runa Pa Pod",                      "efecto": 10, "peso": 0.25 },
+    { "nombre": "Runa Ra Pod",                      "efecto": 10, "peso": 0.25 },
+    
+    { "nombre": "Runa Ini",                         "efecto": 10, "peso": 0.1 },
+    { "nombre": "Runa Pa Ini",                      "efecto": 30, "peso": 3 },
+    { "nombre": "Runa Ra Ini",                      "efecto": 100,"peso": 10 },
+
+    { "nombre": "Runa Prospe",                      "efecto": 1,  "peso": 3 },
+    { "nombre": "Runa Pa Prospe",                   "efecto": 3,  "peso": 9 },
+
+    { "nombre": "Runa Re Tierra",                   "efecto": 1,  "peso": 2 },
+    { "nombre": "Runa Re Fuego",                    "efecto": 1,  "peso": 2 },
+    { "nombre": "Runa Re Neutral",                  "efecto": 1,  "peso": 2 },
+    { "nombre": "Runa Re Aire",                     "efecto": 1,  "peso": 2 },
+    { "nombre": "Runa Re Agua",                     "efecto": 1,  "peso": 2 },
+  
+    { "nombre": "Runa Re Per Tierra",               "efecto": 1,  "peso": 6 },
+    { "nombre": "Runa Re Per Fuego",                "efecto": 1,  "peso": 6 },
+    { "nombre": "Runa Re Per Neutral",              "efecto": 1,  "peso": 6 },
+    { "nombre": "Runa Re Per Aire",                 "efecto": 1,  "peso": 6 },
+    { "nombre": "Runa Re Per Agua",                 "efecto": 1,  "peso": 6 },
+    
+    { "nombre": "Runa Po",                          "efecto": 1,  "peso": 15 },
+    { "nombre": "Runa Pa Pi",                       "efecto": 3,  "peso": 45 },
+    { "nombre": "Runa Po Per",                      "efecto": 1,  "peso": 2 },
+    { "nombre": "Runa Pa Pi Per",                   "efecto": 3,  "peso": 6 },
+    { "nombre": "Runa Da Per",                      "efecto": 1,  "peso": 2 },
+    { "nombre": "Runa Pa Do Per",                   "efecto": 3,  "peso": 6 },
+    { "nombre": "Runa Ra Da Per",                   "efecto": 10, "peso": 20 },
+    
+    { "nombre": "Runa Cu",                          "efecto": 1,  "peso": 20 },
+    { "nombre": "Runa Al",                          "efecto": 1,  "peso": 51 },
+    { "nombre": "Runa Da",                          "efecto": 1,  "peso": 20 },
+    { "nombre": "Runa Da Ren",                      "efecto": 1,  "peso": 30 },
+    { "nombre": "Runa de caza",                     "efecto": 1, "peso": 5 },
+    { "nombre": "Runa Gri",                         "efecto": 1,  "peso": 30 },
+    { "nombre": "Runa Invo",                        "efecto": 1,  "peso": 30 },
+
+    { "nombre": "Runa Ga Pme",                      "efecto": 1,   "peso": 90 },
+    { "nombre": "Runa Ga Pa",                       "efecto": 1,   "peso": 100 }
+  ]
+  

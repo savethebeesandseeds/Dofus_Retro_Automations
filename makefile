@@ -63,3 +63,12 @@ capture_actions:
 		-l:libtesseract53.a -l:libleptonica-1.84.1.a \
 		-lshcore -ld3d11 -ldxgi -lole32 -luuid -l:libpng16.a -l:libjpeg.a -lzlibstatic -lws2_32 \
 		-lpthread -static-libgcc -static-libstdc++ -lgdi32 -fopenmp -static
+
+forge_mage:
+	x86_64-w64-mingw32-g++ -Wall -std=c++17 forge_mage.cpp \
+		-I./include \
+		-I./include/GUI \
+		-I/src/build/PDCurses            \
+		-L/src/build/PDCurses            \
+		-static -lpdcurses               \
+		-o forge_mage.exe

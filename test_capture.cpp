@@ -30,36 +30,41 @@ int main() {
 
     LOG_INFO("Hooked window: %s\n", dw::get_window_title(hwnd).c_str());
 
-    if (!dw::capture_window(hwnd, "capture.bmp")) {
-        LOG_ERROR("Failed to capture window\n");
-        return 1;
-    }
+    so::detail::capture(hwnd, true);
 
-    LOG_INFO("Saved window snapshot to capture.bmp\n");
+    LOG_INFO("Capture image, check temp folder: %s\n", temp_dir);
+    
+    // if (!dw::capture_window(hwnd, "capture.bmp")) {
+    //     LOG_ERROR("Failed to capture window\n");
+    //     return 1;
+    // }
 
-    RECT rcClient, rcWindow;
-    ::GetClientRect(hwnd, &rcClient);
-    ::GetWindowRect(hwnd, &rcWindow);
+    // LOG_INFO("Saved window snapshot to capture.bmp\n");
 
-    LOG_INFO("Client Area: %d x %d\n", rcClient.right - rcClient.left, rcClient.bottom - rcClient.top);
-    LOG_INFO("Window Area: %d x %d\n", rcWindow.right - rcWindow.left, rcWindow.bottom - rcWindow.top);
+    // RECT rcClient, rcWindow;
+    // ::GetClientRect(hwnd, &rcClient);
+    // ::GetWindowRect(hwnd, &rcWindow);
+
+    // LOG_INFO("Client Area: %d x %d\n", rcClient.right - rcClient.left, rcClient.bottom - rcClient.top);
+    // LOG_INFO("Window Area: %d x %d\n", rcWindow.right - rcWindow.left, rcWindow.bottom - rcWindow.top);
 
     
-    UINT dpi = GetDpiForWindow(hwnd);
-    LOG_INFO("Window DPI: %u\n", dpi);
+    // UINT dpi = GetDpiForWindow(hwnd);
+    // LOG_INFO("Window DPI: %u\n", dpi);
 
-    std::string txt = so::read_window(hwnd, tesseract::PSM_SPARSE_TEXT);
-    LOG_INFO("=== Full OCR ===\n%s\n", txt.c_str());
+    // std::string txt = so::read_window(hwnd, tesseract::PSM_SPARSE_TEXT);
+    // LOG_INFO("=== Full OCR ===\n%s\n", txt.c_str());
 
-    RECT loot{320, 1215, 1230, 1430};
-    std::string loot_txt = so::read_region(hwnd, loot);
-    LOG_INFO("=== Loot OCR ===\n%s\n", loot_txt.c_str());
+    // RECT loot{320, 1215, 1230, 1430};
+    // std::string loot_txt = so::read_region(hwnd, loot);
+    // LOG_INFO("=== Loot OCR ===\n%s\n", loot_txt.c_str());
 
-    /* claen the enviroment */
-    if(CFG_BOOL("delete_temp", false)) {
-        LOG_INFO("Cleaning temporal directory: %s...\n", temp_dir);
-        du::DeleteFilesInDirectory(temp_dir);
-    }
+    // /* claen the enviroment */
+    // if(CFG_BOOL("delete_temp", false)) {
+    //     LOG_INFO("Cleaning temporal directory: %s...\n", temp_dir);
+    //     du::DeleteFilesInDirectory(temp_dir);
+    // }
+
 
     return 0;
 }

@@ -1,0 +1,51 @@
+# mercadillo_recursos.proc 
+#       No arguments...
+#           Walk all the resources
+
+#                   proc                                    Categoria       scroll              output_path
+call_proc   recursos/mercadillos/mercadillo_selecionar_categoria                   Ala              0
+call_proc   recursos/mercadillos/mercadillo_todos_los_items_de_categoria           Ala                            "./data/resources/impure"
+call_proc   recursos/mercadillos/mercadillo_selecionar_categoria                   Caparazon        0
+call_proc   recursos/mercadillos/mercadillo_todos_los_items_de_categoria           Caparazon                      "./data/resources/impure"
+call_proc   recursos/mercadillos/mercadillo_selecionar_categoria                   Cola             0
+call_proc   recursos/mercadillos/mercadillo_todos_los_items_de_categoria           Cola                           "./data/resources/impure"
+call_proc   recursos/mercadillos/mercadillo_selecionar_categoria                   Cuero            0
+call_proc   recursos/mercadillos/mercadillo_todos_los_items_de_categoria           Cuero                          "./data/resources/impure"
+call_proc   recursos/mercadillos/mercadillo_selecionar_categoria                   Cascara          0
+call_proc   recursos/mercadillos/mercadillo_todos_los_items_de_categoria           Cascara                        "./data/resources/impure"
+call_proc   recursos/mercadillos/mercadillo_selecionar_categoria                   Flor             0
+call_proc   recursos/mercadillos/mercadillo_todos_los_items_de_categoria           Flor                           "./data/resources/impure"
+call_proc   recursos/mercadillos/mercadillo_selecionar_categoria                   Fruta            0
+call_proc   recursos/mercadillos/mercadillo_todos_los_items_de_categoria           Fruta                          "./data/resources/impure"
+call_proc   recursos/mercadillos/mercadillo_selecionar_categoria                   Gelatina         0
+call_proc   recursos/mercadillos/mercadillo_todos_los_items_de_categoria           Gelatina                       "./data/resources/impure"
+call_proc   recursos/mercadillos/mercadillo_selecionar_categoria                   Hueso            0
+call_proc   recursos/mercadillos/mercadillo_todos_los_items_de_categoria           Hueso                          "./data/resources/impure"
+call_proc   recursos/mercadillos/mercadillo_selecionar_categoria                   Huevo            0
+call_proc   recursos/mercadillos/mercadillo_todos_los_items_de_categoria           Huevo                          "./data/resources/impure"
+call_proc   recursos/mercadillos/mercadillo_selecionar_categoria                   Lana             400
+call_proc   recursos/mercadillos/mercadillo_todos_los_items_de_categoria           Lana                           "./data/resources/impure"
+call_proc   recursos/mercadillos/mercadillo_selecionar_categoria                   Legumbre         400
+call_proc   recursos/mercadillos/mercadillo_todos_los_items_de_categoria           Legumbre                       "./data/resources/impure"
+call_proc   recursos/mercadillos/mercadillo_selecionar_categoria                   Ojo              400
+call_proc   recursos/mercadillos/mercadillo_todos_los_items_de_categoria           Ojo                            "./data/resources/impure"
+call_proc   recursos/mercadillos/mercadillo_selecionar_categoria                   Oreja            505
+call_proc   recursos/mercadillos/mercadillo_todos_los_items_de_categoria           Oreja                          "./data/resources/impure"
+call_proc   recursos/mercadillos/mercadillo_selecionar_categoria                   Pata             505
+call_proc   recursos/mercadillos/mercadillo_todos_los_items_de_categoria           Pata                           "./data/resources/impure"
+call_proc   recursos/mercadillos/mercadillo_selecionar_categoria                   Pelo             505
+call_proc   recursos/mercadillos/mercadillo_todos_los_items_de_categoria           Pelo                           "./data/resources/impure"
+call_proc   recursos/mercadillos/mercadillo_selecionar_categoria                   Piel             750
+call_proc   recursos/mercadillos/mercadillo_todos_los_items_de_categoria           Piel                           "./data/resources/impure"
+call_proc   recursos/mercadillos/mercadillo_selecionar_categoria                   Planta           750
+call_proc   recursos/mercadillos/mercadillo_todos_los_items_de_categoria           Planta                         "./data/resources/impure"
+call_proc   recursos/mercadillos/mercadillo_selecionar_categoria                   Pluma            750
+call_proc   recursos/mercadillos/mercadillo_todos_los_items_de_categoria           Pluma                          "./data/resources/impure"
+call_proc   recursos/mercadillos/mercadillo_selecionar_categoria                   Polvo            750
+call_proc   recursos/mercadillos/mercadillo_todos_los_items_de_categoria           Polvo                          "./data/resources/impure"
+call_proc   recursos/mercadillos/mercadillo_selecionar_categoria                   Recurso          750
+call_proc   recursos/mercadillos/mercadillo_todos_los_items_de_categoria           Recurso                        "./data/resources/impure"
+call_proc   recursos/mercadillos/mercadillo_selecionar_categoria                   Semilla          750
+call_proc   recursos/mercadillos/mercadillo_todos_los_items_de_categoria           Semilla                        "./data/resources/impure"
+call_proc   recursos/mercadillos/mercadillo_selecionar_categoria                   Tejido           750
+call_proc   recursos/mercadillos/mercadillo_todos_los_items_de_categoria           Tejido                         "./data/resources/impure"

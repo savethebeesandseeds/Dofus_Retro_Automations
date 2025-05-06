@@ -1,0 +1,15 @@
+# mercadillo_lenadores.proc 
+#       No arguments...
+#           Walk all the resources
+
+#                   proc                                    Categoria       scroll              output_path
+call_proc   recursos/mercadillos/mercadillo_selecionar_categoria                   Brote          0
+call_proc   recursos/mercadillos/mercadillo_todos_los_items_de_categoria           Brote                        "./data/resources/impure"
+call_proc   recursos/mercadillos/mercadillo_selecionar_categoria                   Corteza        0
+call_proc   recursos/mercadillos/mercadillo_todos_los_items_de_categoria           Corteza                      "./data/resources/impure"
+call_proc   recursos/mercadillos/mercadillo_selecionar_categoria                   Madera         0
+call_proc   recursos/mercadillos/mercadillo_todos_los_items_de_categoria           Madera                       "./data/resources/impure"
+call_proc   recursos/mercadillos/mercadillo_selecionar_categoria                   Raíz           0
+call_proc   recursos/mercadillos/mercadillo_todos_los_items_de_categoria           Raíz                         "./data/resources/impure"
+call_proc   recursos/mercadillos/mercadillo_selecionar_categoria                   Tabla          0
+call_proc   recursos/mercadillos/mercadillo_todos_los_items_de_categoria           Tabla                        "./data/resources/impure"

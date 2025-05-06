@@ -102,9 +102,20 @@ static OpenCV / Tesseract builds, so no dependency hunting.
 
    Both scripts drop their artefacts in `build/`.
 
+5. ***Ncurses**
+   cd /src/build/PDCurses
+
+   make -C wincon \
+      CC=x86_64-w64-mingw32-gcc \
+      AR=x86_64-w64-mingw32-ar  \
+      WINDRES=x86_64-w64-mingw32-windres \
+      WIDE=Y UTF8=Y DLL=N
+
+   cp /src/build/PDCurses/wincon/pdcurses.a /src/build/PDCurses/libpdcurses.a
+
 5. **Make**  
    ```bash
-   make test64 -j$(nproc)
+   make main -j$(nproc)
    ```
 </details>
 

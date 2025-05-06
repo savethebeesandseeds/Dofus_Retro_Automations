@@ -70,7 +70,7 @@ inline std::string expand_args(std::string_view line,
     std::string out(line);
     for (size_t k = 0; k < args.size(); ++k) {
         std::string key = '$' + std::to_string(k + 1);
-        std::string repl = (args[k] == "random") ? du::random_hex() : args[k];
+        std::string repl = args[k];
 
         size_t pos = 0;
         while ((pos = out.find(key, pos)) != std::string::npos) {
@@ -174,11 +174,11 @@ inline bool run_proc(Context& ctx,
                 return false;
         }
     /*──────────────── basic mouse / kbd ───────────────*/
-        else if (cmd == "click")       { int x,y; ss>>x>>y; LOG_DEBUG("[run_proc] click (%d,%d)\n",x,y); dw::click(ctx.hwnd,x,y); }
-        else if (cmd == "click_delta") { int x,y,dx,dy; ss>>x>>y>>dx>>dy; LOG_DEBUG("[run_proc] click_delta (%d+%d,%d+%d)\n",x,dx,y,dy); dw::click(ctx.hwnd,x+dx,y+dy); }
-        else if (cmd == "dblclick")    { int x,y; ss>>x>>y; LOG_DEBUG("[run_proc] dblclick (%d,%d)\n",x,y); dw::dbl_click(ctx.hwnd,x,y); }
-        else if (cmd == "move")        { int x,y; ss>>x>>y; LOG_DEBUG("[run_proc] move (%d,%d)\n",x,y); dw::move_cursor(ctx.hwnd,x,y); }
-        else if (cmd == "scroll")      { int x,y,d; ss>>x>>y>>d; LOG_DEBUG("[run_proc] scroll (%d,%d) d=%d\n",x,y,d); if(d) dw::mouse_wheel(ctx.hwnd,x,y,d); }
+        else if (cmd == "click")       { int x,y; ss>>x>>y; LOG_EVENT("[run_proc] click (%d,%d)\n",x,y); dw::click(ctx.hwnd,x,y); }
+        else if (cmd == "click_delta") { int x,y,dx,dy; ss>>x>>y>>dx>>dy; LOG_EVENT("[run_proc] click_delta (%d+%d,%d+%d)\n",x,dx,y,dy); dw::click(ctx.hwnd,x+dx,y+dy); }
+        else if (cmd == "dblclick")    { int x,y; ss>>x>>y; LOG_EVENT("[run_proc] dblclick (%d,%d)\n",x,y); dw::dbl_click(ctx.hwnd,x,y); }
+        else if (cmd == "move")        { int x,y; ss>>x>>y; LOG_EVENT("[run_proc] move (%d,%d)\n",x,y); dw::move_cursor(ctx.hwnd,x,y); }
+        else if (cmd == "scroll")      { int x,y,d; ss>>x>>y>>d; LOG_EVENT("[run_proc] scroll (%d,%d) d=%d\n",x,y,d); if(d) dw::mouse_wheel(ctx.hwnd,x,y,d); }
         else if (cmd == "hold_click")  {
             int x,y,dur; ss>>x>>y>>dur;
             LOG_EVENT("[run_proc] hold_click (%d,%d) dur=%dms\n",x,y,dur);
@@ -186,9 +186,9 @@ inline bool run_proc(Context& ctx,
             if (dur < 0)  throw std::runtime_error("hold_click duration must be >0");
             dw::mouse_down(ctx.hwnd,x,y); ::Sleep(dur); dw::mouse_up(ctx.hwnd,x,y);
         }
-        else if (cmd == "type")        { std::string t; std::getline(ss,t); t=du::trim_quotes(du::trim(t)); LOG_DEBUG("[run_proc] type \"%s\"\n",t.c_str()); dw::send_text(ctx.hwnd,t); }
-        else if (cmd == "key")         { std::string k; ss>>k; LOG_DEBUG("[run_proc] key \"%s\"\n",k.c_str()); dw::send_vk_infocus(ctx.hwnd,k); }
-        else if (cmd == "paste")       { std::string t; std::getline(ss,t); t=du::trim_quotes(du::trim(t)); LOG_DEBUG("[run_proc] paste \"%s\"\n",t.c_str()); dw::paste(ctx.hwnd,dw::to_wstring(t)); }
+        else if (cmd == "type")        { std::string t; std::getline(ss,t); t=du::trim_quotes(du::trim(t)); LOG_EVENT("[run_proc] type \"%s\"\n",t.c_str()); dw::send_text(ctx.hwnd,t); }
+        else if (cmd == "key")         { std::string k; ss>>k; LOG_EVENT("[run_proc] key \"%s\"\n",k.c_str()); dw::send_vk_infocus(ctx.hwnd,k); }
+        else if (cmd == "paste")       { std::string t; std::getline(ss,t); t=du::trim_quotes(du::trim(t)); LOG_EVENT("[run_proc] paste \"%s\"\n",t.c_str()); dw::paste(ctx.hwnd,dw::to_wstring(t)); }
         else if (cmd == "sleep")       { int ms; ss>>ms; LOG_EVENT("[run_proc] sleep %dms\n",ms); std::this_thread::sleep_for(std::chrono::milliseconds(ms)); }
 
     /*──────────────── CTX helpers ─────────────────────*/
@@ -200,6 +200,11 @@ inline bool run_proc(Context& ctx,
             std::string var,value; ss>>var>>value;
             LOG_EVENT("[run_proc] set_vars  %s = \"%s\"\n",var.c_str(),value.c_str());
             ctx.vars[var]=value;
+        }
+        else if (cmd == "append_vars") {
+            std::string var,value; ss>>var>>value;
+            LOG_EVENT("[run_proc] append_vars  %s = \"%s\"\n",var.c_str(),value.c_str());
+            ctx.vars[var]+=value;
         }
     /*──────────────── OCR helpers ─────────────────────*/
         else if (cmd == "OCR") {
@@ -220,6 +225,11 @@ inline bool run_proc(Context& ctx,
             std::string txt = so::read_region(ctx.hwnd, rc);
             if (du::simplify(txt).find(du::simplify(exp)) == std::string::npos)
                 throw std::runtime_error("EXPECT_OCR failed. exp='"+exp+"' got='"+txt+"'");
+        }
+        else if (cmd == "OCR_append") {
+            int x,y,w,h; std::string _,var; ss>>x>>y>>w>>h>>_>>var;
+            LOG_EVENT("[run_proc] OCR  (%d,%d,%d,%d) → %s\n",x,y,w,h,var.c_str());
+            RECT rc{x,y,x+w,y+h}; ctx.vars[var]+=so::read_region(ctx.hwnd,rc);
         }
         else if (cmd == "ocr_break") { /* …same pattern, shortened for brevity */ 
             int x,y,w,h; std::string exp; ss>>x>>y>>w>>h; std::getline(ss,exp);
@@ -312,23 +322,28 @@ inline bool run_proc(Context& ctx,
 
     /*──────── save all vars ───────────*/
         else if (cmd == "save") {
-            std::string fname; int reset = 0; ss>>std::quoted(fname); if(!(ss>>reset)) reset=0;
-            LOG_EVENT("[run_proc] save  \"%s\"  reset=%d  vars=%zu\n", fname.c_str(), reset, ctx.vars.size());
-
-            std::ofstream out(fname);
-            if(!out) throw std::runtime_error("save: cannot open '"+fname+"'");
-            out<<"{\n";
-            size_t n=0, total=ctx.vars.size();
-            for(auto&[k,v]:ctx.vars){
-                out<<"  \""<<du::jesc(k)<<"\" : \""<<du::jesc(v)<<"\"";
-                if(++n<total) out<<',';
-                out<<"\n";
-                /*─── NEW: also log each variable ───*/
-                LOG_EVENT("[run_proc] saved  \"%s\" = \"%s\"\n", k.c_str(), v.c_str());
-            }
-            out<<"}\n";
-            if(reset) ctx.vars.clear();
+            std::string path, fname;    int reset = 0;
+            if (!(ss >> std::quoted(path) >> std::quoted(fname) >> reset)) { throw std::runtime_error("save: expected args: \"<path>\" \"<filename>\" <resetFlag>"); }
+            std::string fullpath = path;
+            if (!fullpath.empty() && fullpath.back() != '/' && fullpath.back() != '\\')
+                fullpath += '/';
+            fullpath += fname;
+            if (fname == "random" || fname == "\"random\"")
+                fullpath = path + "/" + du::random_hex();
+            fullpath += ".json";
+            LOG_EVENT("[run_proc] save  \"%s\"  reset=%d  vars=%zu\n",  fullpath.c_str(), reset, ctx.vars.size());
+            std::ofstream out(fullpath);
+            if (!out)   throw std::runtime_error("save: cannot open '" + fullpath + "'");
+            out << "{\n";
+            size_t n = 0, total = ctx.vars.size();
+            for (auto& [k, v] : ctx.vars) {
+                out << "  \"" << du::jesc(k) << "\" : \"" << du::jesc(v) << "\"";   if (++n < total) out << ',';    out << "\n";
+                LOG_EVENT("[run_proc] saved \033[92m\"%s\" = \"%s\"\033[0m\n",k.c_str(), v.c_str());
+            }   out << "}\n";
+        
+            if (reset)  ctx.vars.clear();
         }
+    
 
     /*──────────── Default ────────────────────*/
         else {

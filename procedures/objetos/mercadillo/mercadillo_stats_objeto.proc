@@ -1,0 +1,15 @@
+# mercadillo_objeto.proc
+#   Argumentos:
+#       $3=nombre-del-archivo-de-salida, $4=carpeta-de-salida
+
+set_vars    name        ""
+set_vars    category    ""
+set_vars    stats       "[]"
+
+call_fn             read_from_selected_item         name        1024        326         12          641         -579        -20         603         40
+OCR                 610     253     390     40      into    "category"
+
+set_vars            stats       ""
+append_vars         stats       [
+call_proc           objetos/mercadillos/mercadillo_todos_los_stats_de_objeto    1400        261         710         416
+append_vars         stats       ]

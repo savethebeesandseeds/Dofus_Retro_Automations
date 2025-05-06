@@ -42,7 +42,7 @@ inline void save_debug_image(const cv::Mat& img, const std::string& tag)
 }
 
 /* capture HWND → cv::Mat (BGRA, 8-bit) */
-inline cv::Mat capture(HWND hwnd)
+inline cv::Mat capture(HWND hwnd, bool overwrite_dbug=false)
 {
     RECT rc {};  ::GetClientRect(hwnd, &rc);
     int w = rc.right, h = rc.bottom;
@@ -63,7 +63,7 @@ inline cv::Mat capture(HWND hwnd)
 
     ::DeleteObject(hbm); ::DeleteDC(hdcMem); ::ReleaseDC(hwnd, hdcWin);
 
-if(CFG_BOOL("debug_img",false)) {
+if(CFG_BOOL("debug_img",false) && !overwrite_dbug) {
     detail::save_debug_image(img,  "capture");
 }
 

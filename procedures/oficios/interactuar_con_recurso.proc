@@ -3,10 +3,14 @@
 #           $1=click_x, $2=click_y, $3=area_w, $4=area_h,   %5=velocidad
 set_prev                                                        # Capturar el estado de la pantalla
 click               $1          $2                              # Click en objecto
-sleep               250                                         # Esperar reacción
+sleep               500                                         # Esperar reacción
 stop_if_no_diff     $1          $2          $3         $4       # Validar que el objecto este habilitado
-sleep               50                                         # Esperar reacción
+sleep               50                                          # Esperar reacción
 click_delta         $1          $2          12         60       # Click en interactuar
+
+sleep               3500                                        # desplazarse hasta el recurso
 sleep               $5                                          # esperar a recoger el recurso
 key                 ENTER                                       # por si acaso sube de nivel
-#sleep 60000
+
+
+#sleep 12000

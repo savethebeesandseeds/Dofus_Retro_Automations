@@ -1,0 +1,6 @@
+# forge_mage_retrive_stats.proc
+#   Argumentos:
+#       $3=nombre-del-archivo-de-salida, $4=carpeta-de-salida
+
+call_proc           objetos/mercadillos/mercadillo_stats_objeto
+call_fn             append_to_mage_items_file                       $4              $3

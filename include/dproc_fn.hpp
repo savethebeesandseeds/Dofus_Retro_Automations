@@ -246,26 +246,38 @@ Extremes find_white_square_centers(const cv::Mat& prev,
     {
         LOG_DEBUG("[find_white] applying frame mask\n");
         cv::Mat frameMask = cv::Mat::zeros(mask.size(), mask.type());
-        int H = mask.rows, W = mask.cols;
-
+        const int H = mask.rows, W = mask.cols;
+    
+        auto clamp = [&](int& a, int& b, int limit){
+            a = std::clamp(a, 0, limit);
+            b = std::clamp(b, 0, limit);
+        };
+    
         // vertical stripes: x∈[280,500), [2060,2276)
-        std::vector<std::pair<int,int>> xRanges{{280,500}, {2060,2276}};
-        for (auto [x0,x1] : xRanges) {
-            cv::Rect r(x0, 0, x1 - x0, H);
-            frameMask(r).setTo(255);
+        for (auto [x0, x1] : std::vector<std::pair<int,int>>{{280,500}, {2060,2276}}) {
+            clamp(x0, x1, W);
+            int w = x1 - x0;
+            if (w > 0)
+                frameMask(cv::Rect(x0, 0, w, H)).setTo(255);
         }
-
+    
         // horizontal stripes: y∈[0,150), [1000,1160)
-        std::vector<std::pair<int,int>> yRanges{{0,150}, {1000,1160}};
-        for (auto [y0,y1] : yRanges) {
-            cv::Rect r(0, y0, W, y1 - y0);
-            frameMask(r).setTo(255);
+        for (auto [y0, y1] : std::vector<std::pair<int,int>>{{0,150}, {1000,1160}}) {
+            clamp(y0, y1, H);
+            int h = y1 - y0;
+            if (h > 0)
+                frameMask(cv::Rect(0, y0, W, h)).setTo(255);
         }
-
-        // mask out everything else
-        mask &= frameMask;
-        LOG_DEBUG("[find_white] after frame mask: %d pix\n", cv::countNonZero(mask));
-    }
+    
+        // **new rule**: zero out everything below y=1160
+        if (1160 < H) {
+            frameMask(cv::Rect(0, 1160, W, H - 1160)).setTo(0);
+        }
+    
+        // apply it
+        cv::bitwise_and(mask, frameMask, mask);
+        LOG_DEBUG("[find_white] after frame mask: %d pixels\n", cv::countNonZero(mask));
+    }    
 
     // 4) morphology: first close small holes, then open tiny spots
     cv::Mat kernel = cv::getStructuringElement(
@@ -429,9 +441,24 @@ bool change_map(dp::Context& ctx,
     }
 
     LOG_EVENT("[change_map] clicking to chang the map to [%s]=(%d,%d)\n", dir.c_str(), cx, cy);
-    dw::click(ctx.hwnd, cx, cy);
+    dw::click(ctx.hwnd, cx, cy + 15); // +15 is  a general overvation fix
 
-    return true;
+    // 6. wait for map to change
+    for(int i; i<150; i++) {
+        cv::Mat win = so::detail::capture(ctx.hwnd);
+        cv::Mat region = win(cv::Rect(1100, 850, 100, 50));
+        /* see if it's full black */
+        cv::Scalar s = cv::sum(region);
+        if(s[0] < 1000) {        // its actually zero when there is a zone change, but 1000 is a small buff in case
+            LOG_EVENT("[change_map] zone change detected with [%f]\n", s[0]);
+            std::this_thread::sleep_for(std::chrono::milliseconds(CFG_INT("new_zone_delay", 1000))); // wait for new zone to update
+            return true;
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(150));
+    }
+
+    LOG_ERROR("[change_map] no zone change detected...\n");
+    return false;
 }
 
 }; // namespace dp_fn

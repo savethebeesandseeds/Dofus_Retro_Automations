@@ -1,0 +1,23 @@
+# lenador_amakna
+#       Arguments: $1=valocity 
+#           Starts at [5,14] 
+call_proc       oficios/lenador/amakna/lenador_zona_(5_14)          $1
+call_proc       oficios/cambiar_zona                                            down
+call_proc       oficios/lenador/amakna/lenador_zona_(5_15)          $1
+call_proc       oficios/cambiar_zona                                            down
+call_proc       oficios/lenador/amakna/lenador_zona_(5_16)          $1
+call_proc       oficios/cambiar_zona                                            down
+call_proc       oficios/lenador/amakna/lenador_zona_(5_17)          $1
+call_proc       oficios/cambiar_zona                                            down
+call_proc       oficios/lenador/amakna/lenador_zona_(5_18)          $1
+call_proc       oficios/cambiar_zona                                            right
+call_proc       oficios/lenador/amakna/lenador_zona_(6_18)          $1
+call_proc       oficios/cambiar_zona                                            up
+call_proc       oficios/lenador/amakna/lenador_zona_(6_17)          $1
+call_proc       oficios/cambiar_zona                                            up
+call_proc       oficios/lenador/amakna/lenador_zona_(6_16)          $1
+call_proc       oficios/cambiar_zona                                            up
+call_proc       oficios/lenador/amakna/lenador_zona_(6_15)          $1
+call_proc       oficios/cambiar_zona                                            up
+call_proc       oficios/lenador/amakna/lenador_zona_(6_14)          $1
+call_proc       oficios/cambiar_zona                                            left

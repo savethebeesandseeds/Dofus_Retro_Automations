@@ -1,0 +1,11 @@
+# mercadillo_campesinos.proc 
+#       No arguments...
+#           Walk all the resources
+
+#                   proc                                    Categoria         scroll                 output_path
+call_proc   recursos/mercadillos/mercadillo_selecionar_categoria                   Aceite            0
+call_proc   recursos/mercadillos/mercadillo_todos_los_items_de_categoria           Aceite                            "./data/resources/impure"
+call_proc   recursos/mercadillos/mercadillo_selecionar_categoria                   Cereal            0
+call_proc   recursos/mercadillos/mercadillo_todos_los_items_de_categoria           Cereal                            "./data/resources/impure"
+call_proc   recursos/mercadillos/mercadillo_selecionar_categoria                   Harina            0
+call_proc   recursos/mercadillos/mercadillo_todos_los_items_de_categoria           Harina                            "./data/resources/impure"

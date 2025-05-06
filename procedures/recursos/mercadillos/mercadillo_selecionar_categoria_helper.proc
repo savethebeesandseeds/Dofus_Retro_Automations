@@ -1,0 +1,7 @@
+# mercadillo_selecionar_categoria_helper.proc
+#   Arguments: 
+#       $1=x-coord-scroll-up |  $2=y-coord-scroll-up
+
+set_prev
+hold_click   $1     $2      500       # scroll up for half a second
+break_if_no_diff    399     336     247     625

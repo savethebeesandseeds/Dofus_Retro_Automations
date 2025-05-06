@@ -1,4 +1,14 @@
 # lenador_activo.proc
 #   Arguments: None
-#loop    25      oficios/lenador/lenador_la_mililameda       14000
-loop    25      oficios/lenador/lenador_astrub       14000
+#loop    25      oficios/lenador/lenador_la_mililameda       10000
+#loop    25      oficios/lenador/lenador_astrub       10000
+#loop    25      oficios/lenador/lenador_amakna       14000
+
+call_proc       oficios/cambiar_zona                                            left
+call_proc       oficios/cambiar_zona                                            left
+call_proc       oficios/cambiar_zona                                            left
+call_proc       oficios/cambiar_zona                                            left
+call_proc       oficios/cambiar_zona                                            left
+call_proc       oficios/cambiar_zona                                            left
+call_proc       oficios/cambiar_zona                                            left
+call_proc       oficios/cambiar_zona                                            left

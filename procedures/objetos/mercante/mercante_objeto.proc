@@ -1,0 +1,31 @@
+# mercante_objeto.proc
+#   Argumentos:
+#       $1=x-coord-select-obect, $2=y-coord-select-obect, $3=nombre-del-objeto, $4=carpeta-de-salida
+
+click        $1         $2        # click en el objeto
+sleep        450                  # ms
+
+# Caracteristicas principales
+OCR     870     372     653     41      into    "name"
+OCR     1545    371     147     38      into    "level"
+OCR     860     700     642     38      into    "category"
+OCR     860     428     139     34      into    "pods"
+OCR     1252    848     373     41      into    "price_beta"
+
+# Ingresar a Resetas asociadas
+click        1067 665             # click en lupa
+sleep        300                  # ms
+click_phrase_rect       1075     675    295     250  "asociadas"
+sleep        450                  # ms
+
+# Nombre Completo
+OCR     946     249     737     47      into    "full_name"
+
+# Receta del objeto
+call_proc    mercadillos/objecto_leer_receta
+
+# Finalizar
+click        1696 136             # click en Cerar
+sleep        400                  # ms
+
+save        $4          $3          1

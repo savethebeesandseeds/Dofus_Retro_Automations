@@ -71,7 +71,42 @@ inline void mouse_down(HWND h, int x, int y){dw::adjust_dpi(x, y);LPARAM lp = MA
 inline void mouse_up(HWND h, int x, int y){dw::adjust_dpi(x, y);LPARAM lp = MAKELPARAM(x, y);::PostMessage(h, WM_LBUTTONUP, 0, lp);}
 inline void click(HWND h,int x,int y){adjust_dpi(x,y);LPARAM lp=MAKELPARAM(x,y);::PostMessage(h,WM_LBUTTONDOWN,MK_LBUTTON,lp);::PostMessage(h,WM_LBUTTONUP,0,lp);}
 inline void dbl_click(HWND h,int x,int y){click(h,x,y);::Sleep(60);click(h,x,y);}
-inline void move_cursor_real_mouse(HWND h,int x,int y){adjust_dpi(x,y);POINT p{x,y};::ClientToScreen(h,&p);::SetCursorPos(p.x,p.y);}
+inline void move_cursor_in_focus(HWND h,int x,int y) {
+    // 1) remember who was in front
+    HWND prevFg = ::GetForegroundWindow();
+
+    // 2) get thread IDs
+    DWORD thisT  = ::GetCurrentThreadId();
+    DWORD prevT  = ::GetWindowThreadProcessId(prevFg, nullptr);
+    DWORD targetT = ::GetWindowThreadProcessId(h, nullptr);
+
+    // 3) attach so SetForegroundWindow will work
+    ::AttachThreadInput(thisT, prevT,   TRUE);
+    ::AttachThreadInput(thisT, targetT, TRUE);
+
+    // 4) bring to front + focus
+    ::SetForegroundWindow(h);
+    ::SetFocus(h);
+    ::SetActiveWindow(h);
+
+    // small pause to ensure the OS processes the focus change
+    std::this_thread::sleep_for(std::chrono::milliseconds(5));
+    
+    // do the actual move
+    adjust_dpi(x,y);
+    POINT p{x,y};
+    ::ClientToScreen(h,&p);
+    ::SetCursorPos(p.x,p.y);
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(5));
+
+    // 6) restore the previous foreground window
+    ::SetForegroundWindow(prevFg);
+
+    // 7) detach thread inputs
+    ::AttachThreadInput(thisT, targetT, FALSE);
+    ::AttachThreadInput(thisT, prevT,   FALSE);
+}
 inline void move_cursor(HWND h, int x, int y){adjust_dpi(x, y);LPARAM lp = MAKELPARAM(x, y);::PostMessage(h, WM_MOUSEMOVE, 0, lp);}
 inline void send_key(HWND h,WORD vk,bool ctrl=false){if(ctrl)::PostMessage(h,WM_KEYDOWN,VK_CONTROL,0);::PostMessage(h,WM_KEYDOWN,vk,0);::PostMessage(h,WM_KEYUP,vk,0);if(ctrl)::PostMessage(h,WM_KEYUP,VK_CONTROL,0);} 
 inline void send_text(HWND h,std::string_view s,int d=35){for(char c:s){::PostMessage(h,WM_CHAR,(WPARAM)(unsigned char)c,0);::Sleep(d);} }

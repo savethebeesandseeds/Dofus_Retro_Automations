@@ -1,0 +1,46 @@
+# mercadillo_todos_los_stats_de_objeto.proc
+#       Arguments:
+#           $1=x-stats-bounding-box, $2=y-stats-bounding-box, $3=w-stats-bounding-box, $4=h-stats-bounding-box
+
+
+hold_click          2151        265         750                    # Guarantee Scroll up
+
+# Part A
+OCR_append          $1          257         $3         40          into        stats
+append_vars         stats       &
+OCR_append          $1          310         $3         40          into        stats
+append_vars         stats       &
+OCR_append          $1          363         $3         40          into        stats
+append_vars         stats       &
+OCR_append          $1          416         $3         40          into        stats
+append_vars         stats       &
+OCR_append          $1          469         $3         40          into        stats
+append_vars         stats       &
+OCR_append          $1          522         $3         40          into        stats
+append_vars         stats       &
+OCR_append          $1          575         $3         40          into        stats
+append_vars         stats       &
+OCR_append          $1          628         $3         40          into        stats
+append_vars         stats       &
+
+# Part B, scroll down and read the same
+set_prev
+hold_click          2151        665         750                    # Scroll down
+break_if_no_diff    $1          $2          $3          $4         # Break if no diff
+
+OCR_append          $1          257         $3         40          into        stats
+append_vars         stats       &
+OCR_append          $1          310         $3         40          into        stats
+append_vars         stats       &
+OCR_append          $1          363         $3         40          into        stats
+append_vars         stats       &
+OCR_append          $1          416         $3         40          into        stats
+append_vars         stats       &
+OCR_append          $1          469         $3         40          into        stats
+append_vars         stats       &
+OCR_append          $1          522         $3         40          into        stats
+append_vars         stats       &
+OCR_append          $1          575         $3         40          into        stats
+append_vars         stats       &
+OCR_append          $1          628         $3         40          into        stats
+append_vars         stats       &
